@@ -1,8 +1,61 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="p-6">
-        <h2 class="text-xl font-bold text-gray-700">Contacts Page</h2>
-        <p>Contact management features coming soon.</p>
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-800">Leads</h2>
+        <a href="{{ route('leads.create') }}"
+           class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+            + Add Lead
+        </a>
     </div>
+
+    @if(session('success'))
+        <div class="bg-green-100 text-green-800 p-3 rounded mb-4">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if($leads->isEmpty())
+        <p class="text-gray-600">No leads found.</p>
+    @else
+        <div class="overflow-x-auto bg-white shadow rounded">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Name</th>
+                        <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Email</th>
+                        <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Phone</th>
+                        <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Status</th>
+                        <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Note</th>
+                        <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    @foreach ($leads as $lead)
+                        <tr>
+                            <td class="px-4 py-2">{{ $lead->name }}</td>
+                            <td class="px-4 py-2">{{ $lead->email }}</td>
+                            <td class="px-4 py-2">{{ $lead->phone }}</td>
+                            <td class="px-4 py-2">
+                                <span class="inline-block bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded">
+                                    {{ $lead->status }}
+                                </span>
+                            </td>
+                            <td class="px-4 py-2">{{ $lead->note }}</td>
+                            <td class="px-4 py-2 space-x-2">
+                                <a href="{{ route('leads.edit', $lead->id) }}"
+                                   class="text-blue-600 hover:underline">Edit</a>
+                                <form action="{{ route('leads.destroy', $lead->id) }}" method="POST" class="inline"
+                                      onsubmit="return confirm('Are you sure you want to delete this lead?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-red-600 hover:underline">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    @endif
 @endsection

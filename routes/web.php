@@ -51,3 +51,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::resource('leads', LeadController::class)->except(['show']);
 });
+
+Route::middleware('auth')->group(function () {
+    Route::resource('tasks', TaskController::class)->except(['show']);
+});
