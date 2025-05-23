@@ -55,3 +55,9 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::resource('tasks', TaskController::class)->except(['show']);
 });
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin-panel', function () {
+        return 'Only visible to Admins';
+    });
+});

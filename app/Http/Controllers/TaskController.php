@@ -6,11 +6,28 @@ use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
-    public function index()
-    {
-        $tasks = Task::where('user_id', auth()->id())->latest()->get();
-        return view('tasks.index', compact('tasks'));
+    public function index(Request $request)
+{
+    $query = Task::where('user_id', auth()->id());
+
+    if ($request->filled('search')) {
+        $search = $request->input('search');
+        $query->where(function ($q) use ($search) {
+            $q->where('title', 'ILIKE', "%$search%")
+              ->orWhere('description', 'ILIKE', "%$search%");
+        });
     }
+
+    if ($request->has('completed') && in_array($request->completed, ['0', '1'])) {
+        $query->where('completed', $request->completed);
+    }
+
+    $tasks = $query->latest()->paginate(10);
+
+
+    return view('tasks.index', compact('tasks'));
+}
+
 
     public function create()
     {

@@ -1,6 +1,32 @@
 @extends('layouts.app')
 
 @section('content')
+    <form method="GET" action="{{ route('tasks.index') }}" class="mb-6 flex flex-wrap gap-3 items-center">
+
+    <!-- Search field -->
+    <input type="text" name="search" value="{{ request('search') }}"
+           placeholder="Search tasks..."
+           class="px-4 py-2 border rounded w-64 focus:outline-none focus:ring-2 focus:ring-blue-300" />
+
+    <!-- Completion filter -->
+    <select name="completed" class="px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300">
+        <option value="">All Status</option>
+        <option value="0" {{ request('completed') === '0' ? 'selected' : '' }}>Not Completed</option>
+        <option value="1" {{ request('completed') === '1' ? 'selected' : '' }}>Completed</option>
+    </select>
+
+    <!-- Submit -->
+    <button type="submit"
+            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+        Filter
+    </button>
+
+    <!-- Reset -->
+    @if(request()->filled('search') || request()->has('completed'))
+        <a href="{{ route('tasks.index') }}" class="text-sm text-red-500 underline">Clear</a>
+    @endif
+</form>
+
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-bold text-gray-800">Tasks</h2>
         <a href="{{ route('tasks.create') }}"
@@ -52,6 +78,10 @@
                     @endforeach
                 </tbody>
             </table>
+            <div class="mt-6">
+    {{ $tasks->withQueryString()->links() }}
+</div>
+
         </div>
     @endif
 @endsection

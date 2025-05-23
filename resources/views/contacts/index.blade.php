@@ -1,6 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
+    <form method="GET" action="{{ route('contacts.index') }}" class="mb-6 flex items-center gap-2">
+    <input type="text" name="search" value="{{ request('search') }}"
+           placeholder="Search contacts..."
+           class="px-4 py-2 border rounded w-72 focus:outline-none focus:ring-2 focus:ring-blue-300" />
+    <button type="submit"
+            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+        Search
+    </button>
+    @if(request('search'))
+        <a href="{{ route('contacts.index') }}"
+           class="text-sm text-red-500 underline ml-2">Clear</a>
+    @endif
+</form>
+
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-bold text-gray-800">My Contacts</h2>
         <a href="{{ route('contacts.create') }}"
@@ -50,6 +64,10 @@
                     @endforeach
                 </tbody>
             </table>
+            <div class="mt-6">
+    {{ $contacts->withQueryString()->links() }}
+</div>
+
         </div>
     @endif
 @endsection

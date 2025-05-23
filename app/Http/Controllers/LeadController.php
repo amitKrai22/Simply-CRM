@@ -6,11 +6,29 @@ use Illuminate\Http\Request;
 
 class LeadController extends Controller
 {
-    public function index()
-    {
-        $leads = Lead::where('user_id', auth()->id())->latest()->get();
-        return view('leads.index', compact('leads'));
+    public function index(Request $request)
+{
+    $query = Lead::where('user_id', auth()->id());
+
+    if ($request->filled('search')) {
+        $search = $request->input('search');
+        $query->where(function ($q) use ($search) {
+            $q->where('name', 'ILIKE', "%$search%")
+              ->orWhere('email', 'ILIKE', "%$search%")
+              ->orWhere('phone', 'ILIKE', "%$search%");
+        });
     }
+
+    if ($request->filled('status')) {
+        $query->where('status', $request->input('status'));
+    }
+
+    $leads = $query->latest()->paginate(10);
+
+
+    return view('leads.index', compact('leads'));
+}
+
 
     public function create()
     {

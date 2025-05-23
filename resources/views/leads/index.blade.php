@@ -1,6 +1,32 @@
 @extends('layouts.app')
 
 @section('content')
+    <form method="GET" action="{{ route('leads.index') }}" class="mb-6 flex flex-wrap gap-3 items-center">
+    <!-- Search input -->
+    <input type="text" name="search" value="{{ request('search') }}"
+           placeholder="Search leads..."
+           class="px-4 py-2 border rounded w-64 focus:outline-none focus:ring-2 focus:ring-blue-300" />
+
+    <!-- Status dropdown -->
+    <select name="status" class="px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300">
+        <option value="">All Status</option>
+        <option value="New" {{ request('status') == 'New' ? 'selected' : '' }}>New</option>
+        <option value="Contacted" {{ request('status') == 'Contacted' ? 'selected' : '' }}>Contacted</option>
+        <option value="Converted" {{ request('status') == 'Converted' ? 'selected' : '' }}>Converted</option>
+    </select>
+
+    <!-- Submit -->
+    <button type="submit"
+            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+        Filter
+    </button>
+
+    <!-- Reset -->
+    @if(request()->filled('search') || request()->filled('status'))
+        <a href="{{ route('leads.index') }}" class="text-sm text-red-500 underline">Clear</a>
+    @endif
+</form>
+
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-bold text-gray-800">Leads</h2>
         <a href="{{ route('leads.create') }}"
@@ -56,6 +82,10 @@
                     @endforeach
                 </tbody>
             </table>
+            <div class="mt-6">
+    {{ $leads->withQueryString()->links() }}
+</div>
+
         </div>
     @endif
 @endsection

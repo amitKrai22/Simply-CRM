@@ -7,10 +7,28 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class ContactController extends Controller
 {
     use AuthorizesRequests;
-    public function index()
+    public function index(Request $request)
     {
-        $contacts = Contact::where('user_id', auth()->id())->latest()->get();
-        return view('contacts.index', compact('contacts'));
+        // $query = Contact::where('user_id', auth()->id());
+        $query = Contact::query();
+
+    if (!auth()->user()->isAdmin()) {
+        $query->where('user_id', auth()->id());
+    }
+
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'ILIKE', "%$search%")
+                ->orWhere('email', 'ILIKE', "%$search%")
+                ->orWhere('phone', 'ILIKE', "%$search%");
+            });
+    }
+
+    $contacts = $query->latest()->paginate(10); // 10 items per page
+
+
+    return view('contacts.index', compact('contacts'));
     }
 
     public function create()
