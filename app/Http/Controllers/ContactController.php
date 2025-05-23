@@ -3,6 +3,8 @@ namespace App\Http\Controllers;
 use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use App\Exports\ContactsExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ContactController extends Controller
 {
@@ -81,5 +83,10 @@ class ContactController extends Controller
         $contact->delete();
         return redirect()->route('contacts.index')->with('success', 'Contact deleted.');
     }
+
+    public function export()
+{
+    return Excel::download(new ContactsExport, 'contacts.xlsx');
+}
 }
 

@@ -1,18 +1,32 @@
 @extends('layouts.app')
 
 @section('content')
-    <form method="GET" action="{{ route('contacts.index') }}" class="mb-6 flex items-center gap-2">
-    <input type="text" name="search" value="{{ request('search') }}"
-           placeholder="Search contacts..."
-           class="px-4 py-2 border rounded w-72 focus:outline-none focus:ring-2 focus:ring-blue-300" />
-    <button type="submit"
-            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-        Search
-    </button>
-    @if(request('search'))
-        <a href="{{ route('contacts.index') }}"
-           class="text-sm text-red-500 underline ml-2">Clear</a>
-    @endif
+    
+
+    <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+    <!-- Search Form -->
+    <form method="GET" action="{{ route('contacts.index') }}" class="flex items-center gap-2 w-full md:w-auto">
+        <input type="text" name="search" value="{{ request('search') }}"
+               placeholder="Search contacts..."
+               class="px-4 py-2 border rounded w-72 focus:outline-none focus:ring-2 focus:ring-blue-300" />
+        <button type="submit"
+                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+            Search
+        </button>
+        @if(request('search'))
+            <a href="{{ route('contacts.index') }}" class="text-sm text-red-500 underline ml-2">Clear</a>
+        @endif
+    </form>
+
+    <!-- Export Button -->
+    <div class="w-full md:w-auto flex justify-end">
+        <a href="{{ route('contacts.export') }}"
+           class="bg-orange-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">
+            ⬇ Export to Excel
+        </a>
+    </div>
+</div>
+
 </form>
 
     <div class="flex justify-between items-center mb-6">

@@ -8,7 +8,12 @@ class TaskController extends Controller
 {
     public function index(Request $request)
 {
-    $query = Task::where('user_id', auth()->id());
+    // $query = Task::where('user_id', auth()->id());
+    $query = Task::query();
+
+    if (!auth()->user()->isAdmin()) {
+        $query->where('user_id', auth()->id());
+    }
 
     if ($request->filled('search')) {
         $search = $request->input('search');

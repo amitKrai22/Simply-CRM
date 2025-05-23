@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 use App\Models\Lead;
 use Illuminate\Http\Request;
-
 class LeadController extends Controller
 {
     public function index(Request $request)
 {
-    $query = Lead::where('user_id', auth()->id());
+    // $query = Lead::where('user_id', auth()->id());
+    $query = Lead::query();
+
+    if (!auth()->user()->isAdmin()) {
+        $query->where('user_id', auth()->id());
+    }
 
     if ($request->filled('search')) {
         $search = $request->input('search');

@@ -21,9 +21,14 @@
         </div>
     </nav>
 
+
     <main class="p-10 text-center">
+        
         <h2 class="text-2xl font-semibold text-gray-800 mb-2">Welcome, {{ Auth::user()->name }}!</h2>
-        <p class="text-gray-600">You're logged in. Use the nav bar above to manage your CRM data.</p>
+        <p class="text-sm text-gray-500 mb-4">
+    Logged in as: {{ Auth::user()->email }} (Role: {{ Auth::user()->role }})
+</p>
+        <p class="text-gray-600">Use the nav bar above to manage your CRM data.</p>
     </main>
 
 </body>

@@ -61,3 +61,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
         return 'Only visible to Admins';
     });
 });
+
+
+
+Route::get('/contacts/export', [ContactController::class, 'export'])->name('contacts.export');
