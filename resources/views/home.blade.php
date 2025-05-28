@@ -49,6 +49,11 @@
                     <a href="{{ route('contacts.index') }}" class="text-blue-600">Contacts</a>
                     <a href="{{ route('leads.index') }}" class="text-blue-600">Leads</a>
                     <a href="{{ route('tasks.index') }}" class="text-blue-600">Tasks</a>
+                    <a href="{{ route('ai.assistant') }}"
+   class="text-sm text-white bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded transition">
+   🤖 AI Assistant
+</a>
+
                     <form method="POST" action="{{ route('logout') }}" class="inline">
                         @csrf
                         <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">

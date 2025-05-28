@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\AuthController;
@@ -8,6 +7,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskSuggestionController;
+use App\Http\Controllers\AiAssistantController;
 
 Route::get('/', function () {
     return auth()->check()
@@ -63,9 +63,11 @@ Route::middleware(['auth', 'admin'])->group(function () {
     });
 });
 
-
-
 Route::get('/contacts/export', [ContactController::class, 'export'])->name('contacts.export');
 
 
 Route::get('/ai/task-suggestion', [TaskSuggestionController::class, 'suggest'])->name('ai.task.suggest');
+Route::post('/tasks', [TaskController::class, 'store'])->name('tasks.store');
+
+Route::get('/ai/assistant', [AiAssistantController::class, 'show'])->name('ai.assistant');
+Route::post('/ai/assistant/ask', [AiAssistantController::class, 'ask'])->name('ai.assistant.ask');

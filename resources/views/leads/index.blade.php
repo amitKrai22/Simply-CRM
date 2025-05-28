@@ -63,9 +63,20 @@
                             <td class="px-4 py-2">{{ $lead->email }}</td>
                             <td class="px-4 py-2">{{ $lead->phone }}</td>
                             <td class="px-4 py-2">
-                                <span class="inline-block bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded">
-                                    {{ $lead->status }}
+                                @php
+                                    $status = strtolower($lead->status);
+                                    $badgeClass = match($status) {
+                                        'new' => 'bg-blue-100 text-blue-700',
+                                        'contacted' => 'bg-yellow-100 text-yellow-700',
+                                        'converted' => 'bg-green-100 text-green-700',
+                                        default => 'bg-gray-100 text-gray-700',
+                                    };
+                                @endphp
+
+                                <span class="inline-block text-xs px-2 py-1 rounded {{ $badgeClass }}">
+                                    {{ ucfirst($lead->status) }}
                                 </span>
+
                             </td>
                             <td class="px-4 py-2">{{ $lead->note }}</td>
                             <td class="px-4 py-2 space-x-2">
