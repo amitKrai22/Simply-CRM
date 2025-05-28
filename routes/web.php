@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TaskSuggestionController;
 
 Route::get('/', function () {
     return auth()->check()
@@ -65,3 +66,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 
 Route::get('/contacts/export', [ContactController::class, 'export'])->name('contacts.export');
+
+
+Route::get('/ai/task-suggestion', [TaskSuggestionController::class, 'suggest'])->name('ai.task.suggest');

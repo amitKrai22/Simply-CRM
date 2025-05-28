@@ -28,12 +28,23 @@
 </form>
 
     <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-bold text-gray-800">Tasks</h2>
+    <h2 class="text-2xl font-bold text-gray-800">Tasks</h2>
+
+    <div class="flex gap-3">
+        <!-- AI Suggestion Button -->
+        <a href="{{ route('ai.task.suggest') }}"
+           class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded shadow transition duration-200">
+            🧠 Suggest Tasks (AI)
+        </a>
+
+        <!-- Add Task Button -->
         <a href="{{ route('tasks.create') }}"
            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
             + Add Task
         </a>
     </div>
+</div>
+
 
     @if(session('success'))
         <div class="bg-green-100 text-green-800 p-3 rounded mb-4">
